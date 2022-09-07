@@ -1,4 +1,4 @@
-// static range minimum querie
+// static range minimum queries
 
 // logn = ceil(log2(mxn))
 int st[mxn][logn]; // sparse table, store answer for [i, i + 2^j - 1]
