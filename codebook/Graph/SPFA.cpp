@@ -3,7 +3,8 @@ const int mxn = 10000 + 5;
 bitset<mxn> inque;
 vector<pii> g[mxn];
 queue<int> q;
-ll dis[mxn], cnt[mxn];
+vector<ll> dis(mxn, (1ll << 31) - 1);
+vector<ll> cnt(mxn, 0);
 
 bool SPFA(int st) {
   for (int i = 1; i <= n; i++) dis[i] = (1ll << 31) - 1;
