@@ -1,0 +1,33 @@
+const int mxn = 10000 + 5;
+
+bitset<mxn> inque;
+vector<pii> g[mxn];
+queue<int> q;
+ll dis[mxn], cnt[mxn];
+
+bool SPFA(int st) {
+  for (int i = 1; i <= n; i++) dis[i] = (1ll << 31) - 1;
+  q.emplace(st);
+  dis[st] = 0;
+  
+  while (!q.empty())
+  {
+    int u = q.front(); q.pop();
+    inque[u] = 0;
+    for (auto [v, w] : g[u])
+    {
+      if (dis[v] > dis[u] + w) {
+        if (++cnt[v] >= n) return false; // contains negative cycle
+        dis[v] = dis[u] + w;
+
+        if (!inque[v]) {
+          inque[v] = 1;
+          q.emplace(v);
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
