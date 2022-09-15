@@ -1,6 +1,6 @@
 // range sum queries
 // 1-based
-struct Segment_Tree {
+struct Seg{
 
   static const int mxn = 2e5 + 5;
 
@@ -57,6 +57,6 @@ struct Segment_Tree {
     update(ql, qr, v, m + 1, r, id * 2 + 1);
     pull(l, r, id);
   }
-} segment_tree;
+} seg;
 
 
