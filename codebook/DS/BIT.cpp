@@ -5,7 +5,7 @@
 // new instace: 
 struct BIT{
   vector<ll> tree;
-ll size;
+  ll size;
 
   ll lowbit(ll x){
     return x & (-x);
