@@ -19,7 +19,7 @@ struct BIT{
   // add value on pos
   void update(ll pos, ll value){
     for(ll i = pos; i <= size; i += lowbit(i))
-    tree[i] += value;
+      tree[i] += value;
   }
 
   void build_with_arr(ll _size, int data[]){
