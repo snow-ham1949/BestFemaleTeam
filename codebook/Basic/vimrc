@@ -1,5 +1,5 @@
 syn on
-se mouse=a ai sta et rnu
+se mouse=a ai sta et nu
 se ts=2 sts=2 sw=2 st=2 ls=2
 ino ( ()<LEFT>
 ino [ []<LEFT>
