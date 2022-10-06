@@ -1,4 +1,4 @@
-int trie[MAXN][65] = {{0}}, EndOfWord[MAXN]={0}, id = 0;
+int trie[MAXN][CSIZE] = {{0}}, EndOfWord[MAXN]={0}, id = 0;
 
 int getindex(char a){
   return a - 'a';
