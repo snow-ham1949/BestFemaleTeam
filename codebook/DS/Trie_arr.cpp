@@ -1,5 +1,9 @@
-int trie[MAXN][CSIZE] = {{0}}, EndOfWord[MAXN]={0}, id = 0;
+struct Node{
+  int child[CSIZE] = {0};
+  int EndOfWord = 0;
+} Node[MAXN];
 
+int id = 0;
 int getindex(char a){
   return a - 'a';
 }
@@ -8,22 +12,22 @@ void insert(string s){
   int rt = 0, len = s.length();
   for(int i = 0; i < len; i++){
     int index = getindex(s[i]);
-    if(!trie[rt][index]){
+    if(!Node[rt].child[index]){
       id ++;
-      trie[rt][index] = id;
+      Node[rt].child[index] = id;
     }
-    rt = trie[rt][index];
+    rt = Node[rt].child[index];
   }
-  EndOfWord[rt] ++;
+  Node[rt].EndOfWord ++;
 }
 
 bool find(string s){
   int rt = 0, len = s.length();
   for(int i = 0; i < len; i++){
     int index = getindex(s[i]);
-    if(!trie[rt][index]) return false;
-    rt = trie[rt][index];
+    if(!Node[rt].child[index]) return false;
+    rt = Node[rt].child[index];
   }
-  if(!EndOfWord[rt]) return false;
+  if(!Node[rt].EndOfWord ) return false;
   return true;
 }
