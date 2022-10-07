@@ -1,6 +1,7 @@
 struct Node{
   int child[CSIZE] = {0};
   int EndOfWord = 0;
+  string str;
 } Node[MAXN];
 
 int id = 0;
@@ -19,6 +20,7 @@ void insert(string s){
     rt = Node[rt].child[index];
   }
   Node[rt].EndOfWord ++;
+  Node[rt].str = s;
 }
 
 bool find(string s){
@@ -28,6 +30,6 @@ bool find(string s){
     if(!Node[rt].child[index]) return false;
     rt = Node[rt].child[index];
   }
-  if(!Node[rt].EndOfWord ) return false;
+  if(!Node[rt].EndOfWord) return false;
   return true;
 }
