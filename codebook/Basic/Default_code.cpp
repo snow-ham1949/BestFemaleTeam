@@ -6,7 +6,6 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 #define SZ(a) (int) a.size()
-#define endl '\n'
 #define X first
 #define Y second
 
