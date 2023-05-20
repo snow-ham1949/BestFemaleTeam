@@ -16,5 +16,5 @@ b.to_ullong()
 // bit operations
 // can set all bits or single bit
 b.set() 
-b.unset()
+b.reset()
 b.flip()
