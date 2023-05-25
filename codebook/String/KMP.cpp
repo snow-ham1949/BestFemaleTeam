@@ -1,34 +1,29 @@
-int pi[MAXN];
-
-void Prefix(string &Pattern)
-{
-  int len = Pattern.size()-1;
-  int j = 0; // 從dummy開始 
-  for(int i = 2; i <= len; i++){
-    while(j && Pattern[i] != Pattern[j+1]){
-      j = pi[j];
+// build pi function
+// pi(i) is the length of the longest prefix of the substring s[0..i] which is also a suffix of this substring. 
+vector<int> prefix_function(string s) {
+    int n = SZ(s);
+    vector<int> pi(n, 0);
+    for (int i = 1; i < n; i++) {
+        int j = pi[i-1];
+        while (j > 0 && s[i] != s[j])
+            j = pi[j-1];
+        if (s[i] == s[j])
+            j++;
+        pi[i] = j;
     }
-    if(Pattern[j+1] == Pattern[i]) j++;
-    pi[i] = j;
-  }
+    return pi;
 }
 
-vector<int> KMP(string Text, string Pattern){
-  // all 1-indexed
-  int lT = Text.size(), lP = Pattern.size();
-  Text = "#" + Text;
-  Pattern = "#" + Pattern;
-  vector<int> ans;
-  Prefix(Pattern);
-  for(int i = 1, j = 0; i <= lT; i++){
-    while(j > 0 && Pattern[j + 1] != Text[i]) j = pi[j];
-    if (Pattern[j + 1] == Text[i]) j++;
-    if (j == lP) 
-    {
-      // 如果match到了, 出現位置為 i-k (1-indexed)
-      j = pi[j];
-      ans.push_back(i-lP+1);
-    } 
+// find all pattern occurence starting index in text
+vector<int> KMP(string text, string pat) {
+  string s = pat + "#" + text;
+  vector<int> pi = prefix_function(s);
+  vector<int> res;
+  int n = SZ(pat);
+  for (int i = n + 1; i < SZ(s); i++) {
+    if (pi[i] == n) {
+      res.push_back(i - 2 * n);
+    }
   }
-  return ans;
+  return res;
 }
