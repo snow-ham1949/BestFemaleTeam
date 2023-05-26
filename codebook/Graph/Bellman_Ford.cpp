@@ -1,3 +1,4 @@
+// O(nm)
 const ll inf = 1e18;
 const int N = 2500 + 5;
 int par[N];
