@@ -1,3 +1,4 @@
+// O(m)
 const int mxn = 10000 + 5;
 
 bitset<mxn> inque;
