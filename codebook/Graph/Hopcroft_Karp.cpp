@@ -13,7 +13,7 @@ vector<int> HopcroftKarp(vector<vector<int>> g, int L, int R){
 			else{
 				dist[i] = -1;
 			}
-			vis[i] = flase;
+			vis[i] = false;
 		}
 		while(!que.empty()){
 			int x = que.front();
