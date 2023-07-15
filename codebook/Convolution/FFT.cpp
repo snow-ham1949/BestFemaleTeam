@@ -39,7 +39,7 @@ cplx a[MAXN], b[MAXN], c[MAXN];
 /*
 pre_fft();
 fft(n,a);
-fft(n,b);
+fft(n,b); // n need to be 2^k
 for (int i = 0; i < n; i++) {
 	c[i] = a[i] * b[i];
 }
