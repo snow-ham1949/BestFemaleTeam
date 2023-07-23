@@ -1,3 +1,5 @@
+// using default code of Geometry
+// including -, cross, abs2
 double rotating_calipers(vector<pdd> &hull) {
   // find pair which has longest distance
   double ans = 0.0;

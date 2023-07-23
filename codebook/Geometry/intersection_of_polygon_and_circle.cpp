@@ -1,6 +1,8 @@
 // return intersection area of polygon and circle
 // Divides into multiple triangle, and sum up
-const double PI=acos(-1);
+// using default code of Geometry
+// including dot, abs, ori
+
 double _area(pdd pa, pdd pb, double r){
   if(abs(pa)<abs(pb)) swap(pa, pb);
   if(abs(pb)<eps) return 0;

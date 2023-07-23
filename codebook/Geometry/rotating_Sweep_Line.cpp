@@ -1,3 +1,5 @@
+// using default code of Geometry
+// including sign, cross, abs2
 bool cmp(pdd a, pdd b){
 #define is_neg(k) (sign(k.Y) < 0 || (sign(k.Y) == 0 && sign(k.X) < 0))
 	int A = is_neg(a), B = is_neg(b);
