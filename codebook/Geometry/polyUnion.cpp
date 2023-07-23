@@ -11,7 +11,7 @@ double seg(pdd &o, pdd &a, pdd &b) {
 double polyUnion(vector<vector<pdd>> &v) {
   int n = SZ(v); // number of polygons
   double res = 0.0;
-  pair<double, int> s[(n + 10) * 60];
+  vector<pair<double, int>> s((n + 10) * 60);
   for (int i = 0; i < n; i++) {
     int sz = SZ(v[i]);
     for (int j = 0; j < sz; j++ ) {
