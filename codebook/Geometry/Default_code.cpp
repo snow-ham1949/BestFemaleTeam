@@ -2,6 +2,7 @@ typedef pair<double,double> pdd;
 typedef pair<pdd,pdd> Line;
 struct Cir{pdd O; double R;};
 const double eps=1e-8;
+const double PI = acos(-1.0);
 pdd operator+(const pdd &a, const pdd &b)
 { return pdd(a.X + b.X, a.Y + b.Y);}
 pdd operator-(const pdd &a, const pdd &b)
