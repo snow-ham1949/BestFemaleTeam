@@ -29,6 +29,7 @@ struct Seg{
   void build(int l, int r, int id = 1) {
     if (l == r) {
       seg[id].data = a[l];
+      seg[id].tag = 0;
       return;
     }
     int m = (l + r) >> 1;
