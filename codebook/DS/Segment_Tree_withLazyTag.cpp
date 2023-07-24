@@ -1,63 +1,105 @@
-// range sum queries
-// 1-based
-struct Seg{
-
-  static const int mxn = 2e5 + 5;
-
+template<typename T>
+struct Seg {
   struct Node {
-    ll data, tag;
-  } seg[4 * mxn];
+    T val;
+    T lzAdd;
+    T lzSet;
 
-  ll a[mxn];
+    Node() : val(0), lzAdd(0), lzSet(0) {}
+  };
 
-  ll get_val(int l, int r, int id) {
-    return (r - l + 1) * seg[id].tag + seg[id].data;
+  vector<Node> tree;
+  int maxN;
+
+#define lc p << 1
+#define rc p << 1 | 1
+
+  void pushup(int p) {
+    tree[p].val = tree[lc].val + tree[rc].val;
   }
 
-  void push(int l, int r, int id) {
-    seg[id].data = get_val(l, r, id);
-    seg[id * 2].tag += seg[id].tag;
-    seg[id * 2 + 1].tag += seg[id].tag;
-    seg[id].tag = 0;
+  void pushdown(int p, int l, int mid, int r) {
+    if (tree[p].lzSet != 0) {
+      tree[lc].lzSet = tree[rc].lzSet = tree[p].lzSet;
+      tree[lc].val = (mid - l + 1) * tree[p].lzSet;
+      tree[rc].val = (r - mid) * tree[p].lzSet;
+      tree[lc].lzAdd = tree[rc].lzAdd = 0;
+      tree[p].lzSet = 0;
+    } else if (tree[p].lzAdd != 0) {  
+      if (tree[lc].lzSet == 0) tree[lc].lzAdd += tree[p].lzAdd;
+      else {
+        tree[lc].lzSet += tree[p].lzAdd;
+        tree[lc].lzAdd = 0;
+      }
+      if (tree[rc].lzSet == 0) tree[rc].lzAdd += tree[p].lzAdd;
+      else {
+        tree[rc].lzSet += tree[p].lzAdd;
+        tree[rc].lzAdd = 0;
+      }
+      tree[lc].val += (mid - l + 1) * tree[p].lzAdd;
+      tree[rc].val += (r - mid) * tree[p].lzAdd;
+      tree[p].lzAdd = 0;
+    }
   }
 
-  void pull(int l, int r, int id) {
-    int m = (l + r) >> 1;
-    seg[id].data = get_val(l, m, id * 2) + get_val(m + 1, r, id * 2 + 1);
+  Seg(int maxN) : maxN(maxN) {
+    tree.resize(maxN << 2);
   }
 
-  void build(int l, int r, int id = 1) {
+  void build(const vector<T>& arr, int p, int l, int r) {
+    tree[p].lzAdd = tree[p].lzSet = 0;
     if (l == r) {
-      seg[id].data = a[l];
-      seg[id].tag = 0;
+      tree[p].val = arr[l];
       return;
     }
-    int m = (l + r) >> 1;
-    build(l, m, id * 2);
-    build(m + 1, r, id * 2 + 1);
-    pull(l, r, id);
+    int mid = (l + r) >> 1;
+    build(arr, lc, l, mid);
+    build(arr, rc, mid + 1, r);
+    pushup(p);
   }
 
-  ll query(int ql, int qr, int l, int r, int id = 1) {
-    if (qr < l || r < ql) return 0ll;
-    if (ql <= l && r <= qr) return get_val(l, r, id);
-    push(l, r, id);
-    int m = (l + r) >> 1;
-    return query(ql, qr, l, m, id * 2) + query(ql, qr, m + 1, r, id * 2 + 1);
-  }
-
-  void update(int ql, int qr, ll v, int l, int r, int id = 1) {
-    if (qr < l || r < ql) return;
-    if (ql <= l && r <= qr) {
-      seg[id].tag += (v - seg[id].data);
+  void add(int p, int l, int r, int a, int b, T val) {
+    if (a > r || b < l) return;
+    if (a <= l && r <= b) {
+      tree[p].val += (r - l + 1) * val;
+      if (tree[p].lzSet == 0) tree[p].lzAdd += val;
+      else tree[p].lzSet += val;
       return;
     }
-    push(l, r, id);
-    int m = (l + r) >> 1;
-    update(ql, qr, v, l, m, id * 2);
-    update(ql, qr, v, m + 1, r, id * 2 + 1);
-    pull(l, r, id);
+    int mid = (l + r) >> 1;
+    pushdown(p, l, mid, r);
+    add(lc, l, mid, a, b, val);
+    add(rc, mid + 1, r, a, b, val);
+    pushup(p);
   }
-} seg;
 
+  void set(int p, int l, int r, int a, int b, T val) {
+    if (a > r || b < l) return;
+    if (a <= l && r <= b) {
+      tree[p].val = (r - l + 1) * val;
+      tree[p].lzAdd = 0;
+      tree[p].lzSet = val;
+      return;
+    }
+    int mid = (l + r) >> 1;
+    pushdown(p, l, mid, r);
+    set(lc, l, mid, a, b, val);
+    set(rc, mid + 1, r, a, b, val);
+    pushup(p);
+  }
 
+  T query(int p, int l, int r, int a, int b) {
+    if (a > r || b < l) return 0;
+    if (a <= l && r <= b) return tree[p].val;
+    int mid = (l + r) >> 1;
+    pushdown(p, l, mid, r);
+    return query(lc, l, mid, a, b) + query(rc, mid + 1, r, a, b);
+  }
+};
+
+// usage: Seg<ll> seg(n);
+// build: seg.build(vector, 1, 1, n);
+// vector should be 1-based
+// add: increase [a, b] by x
+// set: set [a, b] to x
+// query: sum of [a, b]
