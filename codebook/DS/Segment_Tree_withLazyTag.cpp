@@ -9,7 +9,7 @@ struct Seg {
   };
 
   vector<Node> tree;
-  int maxN;
+  int maxN, n;
 
 #define lc p << 1
 #define rc p << 1 | 1
@@ -46,7 +46,7 @@ struct Seg {
     tree.resize(maxN << 2);
   }
 
-  void build(const vector<T>& arr, int p, int l, int r) {
+  void s_build(const vector<T>& arr, int p, int l, int r) {
     tree[p].lzAdd = tree[p].lzSet = 0;
     if (l == r) {
       tree[p].val = arr[l];
@@ -58,7 +58,12 @@ struct Seg {
     pushup(p);
   }
 
-  void add(int p, int l, int r, int a, int b, T val) {
+  void build(const vector<T>& arr, int _n){
+    n = _n;
+    s_build(arr, 1, 1, _n);
+  }
+
+  void s_add(int p, int l, int r, int a, int b, T val) {
     if (a > r || b < l) return;
     if (a <= l && r <= b) {
       tree[p].val += (r - l + 1) * val;
@@ -68,12 +73,16 @@ struct Seg {
     }
     int mid = (l + r) >> 1;
     pushdown(p, l, mid, r);
-    add(lc, l, mid, a, b, val);
-    add(rc, mid + 1, r, a, b, val);
+    s_add(lc, l, mid, a, b, val);
+    s_add(rc, mid + 1, r, a, b, val);
     pushup(p);
   }
 
-  void set(int p, int l, int r, int a, int b, T val) {
+  void add(int a, int b, T val){
+    s_add(1, 1, n, a, b, val);
+  }
+
+  void s_set(int p, int l, int r, int a, int b, T val) {
     if (a > r || b < l) return;
     if (a <= l && r <= b) {
       tree[p].val = (r - l + 1) * val;
@@ -83,22 +92,30 @@ struct Seg {
     }
     int mid = (l + r) >> 1;
     pushdown(p, l, mid, r);
-    set(lc, l, mid, a, b, val);
-    set(rc, mid + 1, r, a, b, val);
+    s_set(lc, l, mid, a, b, val);
+    s_set(rc, mid + 1, r, a, b, val);
     pushup(p);
   }
 
-  T query(int p, int l, int r, int a, int b) {
+  void set(int a, int b, T val){
+    s_set(1, 1, n, a, b, val);
+  }
+
+  T s_query(int p, int l, int r, int a, int b) {
     if (a > r || b < l) return 0;
     if (a <= l && r <= b) return tree[p].val;
     int mid = (l + r) >> 1;
     pushdown(p, l, mid, r);
-    return query(lc, l, mid, a, b) + query(rc, mid + 1, r, a, b);
+    return s_query(lc, l, mid, a, b) + s_query(rc, mid + 1, r, a, b);
+  }
+
+  T query(int a, int b){
+    return s_query(1, 1, n, a, b);
   }
 };
 
-// usage: Seg<ll> seg(n);
-// build: seg.build(vector, 1, 1, n);
+// usage: Seg<ll> seg(MAXN);
+// build: seg.build(vector, n);
 // vector should be 1-based
 // add: increase [a, b] by x
 // set: set [a, b] to x
