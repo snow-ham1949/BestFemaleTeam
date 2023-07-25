@@ -53,8 +53,8 @@ struct Seg {
       return;
     }
     int mid = (l + r) >> 1;
-    build(arr, lc, l, mid);
-    build(arr, rc, mid + 1, r);
+    s_build(arr, lc, l, mid);
+    s_build(arr, rc, mid + 1, r);
     pushup(p);
   }
 
