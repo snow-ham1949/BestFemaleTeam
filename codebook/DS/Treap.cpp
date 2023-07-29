@@ -4,13 +4,7 @@ struct Node {
   int val;
   int weight, size;
   Node *left, *right;
-  Node(int c) 
-    : val(c), 
-      weight(rnd()), 
-      size(1), 
-      left(NULL), 
-      right(NULL) 
-  {}
+  Node(int c) : val(c), weight(rnd()), size(1), left(NULL), right(NULL) {}
 } *root;
 
 int size(Node *treap) { 
