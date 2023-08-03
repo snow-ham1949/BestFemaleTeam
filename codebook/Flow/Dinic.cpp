@@ -15,7 +15,7 @@ struct Dinic { // 0-base
       G[i].clear(), cnt[i] = 0;
   }
   void add_edge(int u, int v, ll cap) {
-    G[u].pb(edge{v, SZ(G[v]), 0, cap);
+    G[u].pb(edge{v, SZ(G[v]), 0, cap});
     G[v].pb(edge{u, SZ(G[u]) - 1, 0, 0});
   }
   ll dfs(int u, ll cap) {
