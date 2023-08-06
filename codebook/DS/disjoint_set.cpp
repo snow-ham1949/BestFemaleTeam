@@ -1,7 +1,7 @@
 struct DJS {
   int n;
   vector<int> p, sz;
-  void init(_n) {
+  void init(int _n) {
     n = _n;
     p.resize(n);
     sz.assign(n, 1);
@@ -10,10 +10,15 @@ struct DJS {
   int find(int x) {
     return p[x] == x ? x : p[x] = find(p[x]);
   }
-  void _union(int x, int y) {
-    int px = find(x), py = find(y);
-    if (sz[px] > sz[py]) swap(px, py);
+  bool _union(int x, int y) {
+    x = find(x), y = find(y);
+    if (x == y) return false;
+    if (sz[x] > sz[y]) swap(x, y);
     p[x] = y;
-    sz[py] += sz[px];
+    sz[y] += sz[x];
+    return true;
+  }
+  bool same(int x, int y) {
+    return find(x) == find(y);
   }
 } djs;
