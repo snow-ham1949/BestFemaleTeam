@@ -1,6 +1,6 @@
 // using default code of Geometry
 // including +, -, *, eps, cross, sign, ori
-void convex_hull(vector<pll> &dots) {
+void hull(vector<pll> &dots) {
   sort(dots.begin(), dots.end());
   vector<pll> ans(1, dots[0]);
   for (int ct = 0; ct < 2; ++ct, reverse(dots.begin(), dots.end()))
