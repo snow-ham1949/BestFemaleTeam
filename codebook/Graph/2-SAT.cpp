@@ -13,6 +13,7 @@ struct TwoSat {
 	int neg(int i) {
 		return i >= n ? i-n : i+n;
 	}
+  // a => b -> addClause(sat.neg(a), b)
 	void addClause(int a, int b) {
 		g[neg(a)].push_back(b);
 		g[neg(b)].push_back(a);
