@@ -1,41 +1,67 @@
-using Graph = vector<vector<int>>;
+using Vi = vector<int>;
+#define pb push_back
+#define each(a, x) for (auto &a: (x))
+struct SAT2 : Vi {
+  vector<Vi> G;
+  Vi order, flags;
 
-// using SCC
-// addClause(i, twosat.neg(j)) adds clause i, -j
-// solve() returns empty vector if unsolvable
-// Time Complexity: O(n + m)
-struct TwoSat {
-	const int n;
-	Graph g; // Implication graph, of size 2*n
+  // Init n variables, you can add more later
+  SAT2(int n = 0) : G(n * 2) {}
 
-	TwoSat(int nodes) : n(nodes), g(2*nodes) {}
+  // Add new var and return its index
+  int addVar() {
+    G.resize(SZ(G) + 2); return SZ(G)/2;
+  }
 
-	int neg(int i) {
-		return i >= n ? i-n : i+n;
-	}
-  // a => b -> addClause(sat.neg(a), b)
-	void addClause(int a, int b) {
-		g[neg(a)].push_back(b);
-		g[neg(b)].push_back(a);
-	}
-	vector<bool> solve() {
-		SCC scc(g);
+  // Add (i => j) constraint
+  void imply(int i, int j) {
+    i = max(i * 2 - 1, -i * 2 -2);
+    j = max(j * 2 - 1, -j * 2 - 2);
+    G[i].pb(j); G[j ^ 1].pb(i ^ 1);
+  }
 
-		vector<int> inv(scc.cc);
-		for (int i = 0; i < 2*n; ++i) {
-			inv[scc.comp[i]] = scc.comp[neg(i)];
-		}
+  // Add (i v j) constraint
+  void either(int i, int j) { imply(-i, j); }
 
-		vector<int> state(scc.cc, -1);
-		for (int i = 0; i < scc.cc; ++i) {
-			if (state[i] != -1) continue;
-			if (i == inv[i]) return {};
-			state[i] = 1;
-			state[inv[i]] = 0;
-		}
+  // Add !(i ∧ j) constraint
+  void notBoth(int i, int j) { imply(i, -j); }
 
-		vector<bool> res(n);
-		for (int i = 0; i < n; ++i) res[i] = state[scc.comp[i]];
-		return res;
-	}
+  // Constraint at most one true variable
+  void atMostOne(Vi& vars) {
+    int x = addVar();
+    each(i, vars) {
+      int y = addVar();
+      imply(x, y); imply(i, -x); imply(i, y);
+      x = y;
+    }
+  }
+
+  // Solve and save assignments in `values`
+  bool solve() { // O(n+m), Kosaraju is used
+    assign(SZ(G)/2+1, -1);
+    flags.assign(SZ(G), 0);
+    for (int i = 0; i < SZ(G); i++) dfs(i);
+    while (!order.empty()) {
+      if (!propag(order.back()^1, 1)) return 0;
+      order.pop_back();
+    }
+    return 1;
+  }
+
+  void dfs(int i) {
+    if (flags[i]) return;
+    flags[i] = 1;
+    each(e, G[i]) dfs(e);
+    order.pb(i);
+  }
+
+  bool propag(int i, bool first) {
+    if (!flags[i]) return 1;
+    flags[i] = 0;
+    if (at(i/2+1) >= 0) return first;
+    at(i/2+1) = i&1;
+    each(e, G[i]) if (!propag(e, 0)) return 0;
+    return 1;
+  }
 };
+
