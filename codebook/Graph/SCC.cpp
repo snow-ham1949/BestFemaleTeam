@@ -1,57 +1,36 @@
-const int mxn = 1e5 + 5;
-
-vector<int> g[mxn], new_g[mxn];
-int dfn[mxn], low[mxn], in_stk[mxn], root[mxn];
-int num_SCC, cnt;
-stack<int> stk;
-vector<int> root_nodes;
-
-#define eb emplace_back
-void tarjan(int u, int fa)
-{ 
-  // fa: father, for debugging
-  dfn[u] = low[u] = ++cnt;
-  stk.push(u);
-  in_stk[u] = 1;
-
-  for (int v : g[u])
-  {
-    if (!dfn[v]) {
-      tarjan(v, u);
-      low[u] = min(low[u], low[v]);
-    } else if (in_stk[v]) {
-      low[u] = min(low[u], dfn[v]);
-    }
-  }
-
-  if (dfn[u] == low[u]) {
-    root_nodes.eb(u);
-    int x;
-    do {
-      x = stk.top();
-      stk.pop();
-      root[x] = u;
-      in_stk[x] = 0;
-    } while (x != u);
-    num_SCC++;
-  }
-}
-
-void solve()
-{
-  for (int i = 1; i <= n; i++) 
-  {
-    if (!dfn[i]) tarjan(i, i);
-  }
-
-  for (int u = 1; u <= n; u++)
-  {
-    for (int v : g[u])
-    {
-      if (root[v] != root[u]) {
-        new_g[root[u]].eb(root[v]);
-      }
-    }
-  }
-}
-
+using Graph = vector<vector<int>>;
+ 
+// Struct for finding strongly connected components in a graph
+// Condensed graph is in reverse topological order
+// "comp" gives component in condensed graph that node i is in
+// Time Complexity: O(n + m)
+struct SCC {
+	Graph g;
+	vector<int> comp;
+	vector<int> ind;
+	vector<int> sta;
+	int di = 0; // DFS counter
+	int cc = 0; // Comp count
+ 
+	int dfs(int i) {
+		if (ind[i] != -1) return (comp[i] == -1) ? ind[i] : di;
+		ind[i] = di;
+		int md = di;
+		++di;
+ 
+		sta.push_back(i);
+		for (auto t : g[i]) md = min(md, dfs(t));
+ 
+		if (md == ind[i]) {
+			while(comp[i] == -1) {
+				comp[sta.back()] = cc;
+				sta.pop_back();
+			}
+			++cc;
+		}
+		return md;
+	}
+	SCC(const Graph& gr) : g(gr), comp(gr.size(), -1), ind(gr.size(), -1) {
+		for (int i = 0; i < g.size(); ++i) dfs(i);
+	}
+};
