@@ -53,3 +53,4 @@ struct dominator_tree { // 1-base
   }
 } dt;
 // init -> add_edge -> tarjan(root)
+// tree: u -> v, from root to v must pass u
