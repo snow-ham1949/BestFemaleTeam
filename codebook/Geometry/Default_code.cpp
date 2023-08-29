@@ -46,5 +46,5 @@ pdd intersect(const pdd &p1, const pdd &p2, const pdd &p3, const pdd &p4) {
 }
 pdd perp(const pdd &p1)
 { return pdd(-p1.Y, p1.X); }
-pdd projection(const pdd &p1, const pdd &p2, const pdd &p3)
-{ return (p2 - p1) * dot(p3 - p1, p2 - p1) / abs2(p2 - p1); }
+pdd projection(const pdd &p1, const pdd &p2, const pdd &p3) // coordinate of p3 project on p1p2
+{ return p1 + (p2 - p1) * dot(p3 - p1, p2 - p1) / abs2(p2 - p1); }
