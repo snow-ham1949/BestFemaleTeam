@@ -6,22 +6,20 @@ template <class T>
 struct BIT {
   int n;
   vector<T> bit;
-  BIT(int n) {
-    this->n = n + 1;
-    bit.assign(n + 1, 0);
+  BIT(int _n): n(_n) {
+    bit.assign(n, 0);
   }
-  BIT(vector<T> const &a) : BIT(SZ(a)) {
-    for (int i = 0; i < SZ(a); i++) add(i, a[i]);
-  }
-  int sum(int idx) {
-    int res = 0;
-    for (++idx, ; idx > 0; idx -= idx & -idx) res += bit[r];
+  T sum(int x) {
+    T res = 0;
+    for (; x; x -= x & (-x)) res += bit[x];
     return res;
   }
-  int sum(int l, int r) {
+  T sum(int l, int r) {
     return sum(r) - sum(l - 1);
   }
-  void add(int idx, T x) {
-    for (++idx; idx < n; idx += idx & -idx) bit[idx] += x;
+  void add(int x, T val) { // add val, not = val !
+    for (; x <= n; x += x & (-x)) bit[x] += val;
   }
 };
+// 0 - based -> BIT bit(n);
+// 1 - based -> BIT bit(n + 1);
