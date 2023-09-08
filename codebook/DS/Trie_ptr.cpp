@@ -1,34 +1,45 @@
-struct Node{
-  Node *child[CSIZE]={0};
-  int EndOfWord = 0;
-  string str;
-
-  int getindex(char a){
-    return a-'a';
-  }
-
-  void insert(string s){
-    Node *tmp = this;
-    int len = s.length();
-    for (int i = 0; i < len; i++)
-    {
-        int index = getindex(s[i]);
-        if (!tmp->child[index])
-            tmp->child[index] = new Node;
-        tmp = tmp->child[index];
+class Trie {
+public:
+  struct Node {
+    bool end;
+    Node *child[26];
+    Node() {
+        end = false;
+        for (int i = 0; i < 26; i++) child[i] = NULL;
     }
-    tmp->EndOfWord ++;
-    tmp->str = s;
+  };
+  Node *root;
+  Trie() {
+    root = new Node();
   }
-
-  int find(string s){
-    Node *tmp = this;
-    int len = s.length();
-    for(int i = 0; i < len; i++){
-      int index = getindex(s[i]);
-      if(!tmp->child[index]) return 0;
-      tmp = tmp->child[index];
+  
+  void insert(string word) {
+    Node *node = root;
+    for (char c : word) {
+      int ind = c - 'a';
+      if (node->child[ind] == NULL) node->child[ind] = new Node();
+      node = node->child[ind];
     }
-    return tmp->EndOfWord;
+    node->end = true;
+  }
+  
+  bool search(string word) {
+    Node *node = root;
+    for (char c : word) {
+      int ind = c - 'a';
+      if (node->child[ind] == NULL) return false;
+      node = node->child[ind];
+    }
+    return node->end;
+  }
+  
+  bool startsWith(string prefix) {
+    Node *node = root;
+    for (char c : prefix) {
+      int ind = c - 'a';
+      if (node->child[ind] == NULL) return false;
+      node = node->child[ind];
+    }
+    return true;
   }
 };
