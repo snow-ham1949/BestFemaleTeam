@@ -22,7 +22,7 @@ void dfs(int x, int p) {
     if (i == p) {
       continue;
     }
-    getHash(i, x);
+    dfs(i, x);
     hash[x] += shift(hash[i]);
   }
 }
