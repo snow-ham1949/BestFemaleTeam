@@ -14,7 +14,7 @@ ull shift(ull x) {
 const int N = 1e6 + 10;
 
 ull hash[N];
-std::vector<int> edge[N];
+vector<int> edge[N];
 
 void dfs(int x, int p) {
   hash[x] = 1;
