@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define int long long
+
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
@@ -14,19 +16,10 @@ void solve() {
   
 }
 
-/* 
-1. test sample
-2. long long
-3. mod
-4. check template
-5. input/output format/content
-*/
-int main() {
+signed main() {
   ios::sync_with_stdio(0);cin.tie(0);
   int T = 1;
   // cin >> T;
-  while (T--) {
-    solve(); 
-  }
+  while (T--) solve();
   return 0;
 }
