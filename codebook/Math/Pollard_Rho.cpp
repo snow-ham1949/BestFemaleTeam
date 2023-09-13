@@ -1,3 +1,4 @@
+// O(n^(1/4))
 ll mul(ll a, ll b, ll mod) { return (__int128)a * b % mod; }
 bool Miller_Rabin(ll a, ll n) {
   if((a = a % n) == 0) return 1;
