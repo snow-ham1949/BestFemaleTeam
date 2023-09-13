@@ -1,9 +1,9 @@
 n = 1000000
 
-def updatebit(BITTree , n , i ,v):
+def updatebit(BIT, n, i, v):
 	i += 1
 	while i <= n:
-		BITTree[i] += v
+		BIT[i] += v
 		i += i & (-i)
 
 BITTree = [0]*(n+1)
