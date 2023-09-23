@@ -1,3 +1,4 @@
+// bridge is defined as an edge which, when removed, makes the graph disconnected (or more precisely, increases the number of connected components in the graph)
 int low[N], dfn[N];
 bool vis[N];
 int e[M], x[M], y[M]; // e[i] = x[i] ^ y[i]
