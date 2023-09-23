@@ -2,41 +2,40 @@ int bcc[MAXN], dic[MAXN], low[MAXN], component = 0, times = 1;
 vector<int> Stack;
 
 void init(){
-    Stack.clear();
-    memset(bcc,-1, sizeof(int) * MAXN);
-    memset(dic,0, sizeof(int) * MAXN);
-    memset(low,0, sizeof(int) * MAXN);
-    component = 0;
-    times = 1;
+  Stack.clear();
+  memset(bcc,-1, sizeof(int) * MAXN);
+  memset(dic,0, sizeof(int) * MAXN);
+  memset(low,0, sizeof(int) * MAXN);
+  component = 0;
+  times = 1;
 }
 
 void tarjan(vector<int> *adj, int start, int parent){ 
-    dic[start] = low[start] = times; times ++;
-    Stack.push_back(start);
-    for(auto v : adj[start]){
-        if (dic[v] == 0)
-          tarjan(adj,v, start);
-        
-        if (v != parent)
-          low[start] = min(low[start], low[v]);
-    }
+  dic[start] = low[start] = times; times ++;
+  Stack.push_back(start);
+  for(auto v : adj[start]){
+    if (dic[v] == 0)
+      tarjan(adj,v, start);
+    if (v != parent)
+      low[start] = min(low[start], low[v]);
+  }
 
-    if(low[start] == dic[start]){
-        int t = 0;
-        do{
-            t = Stack.back();
-            bcc[t] = component;
-            Stack.pop_back();
-        }while(t != start);
-        component ++;
-    }
+  if(low[start] == dic[start]){
+    int t = 0;
+    do {
+      t = Stack.back();
+      bcc[t] = component;
+      Stack.pop_back();
+    } while(t != start);
+    component++;
+  }
 }
 
 void findbcc(vector<int> *adj, int N){
   init();
   for(int i = 0; i < N; i++){
-      if(dic[i] == 0)
-          tarjan(adj, i, i);
+    if(dic[i] == 0)
+      tarjan(adj, i, i);
   }
 }
 
