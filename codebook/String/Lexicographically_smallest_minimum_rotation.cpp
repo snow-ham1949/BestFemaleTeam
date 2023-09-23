@@ -1,3 +1,4 @@
+// return the lexicographically smallest string among all rotation
 string mcp(string s) {
   #define SZ(a) ((int)a.size())
   int n = SZ(s), i = 0, j = 1;
