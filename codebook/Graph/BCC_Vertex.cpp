@@ -1,3 +1,4 @@
+//  bridge is defined as an edge which, when removed, makes the graph disconnected (or more precisely, increases the number of connected components in the graph)
 vector<int> G[N]; // 1-base
 vector<int> nG[N], bcc[N];
 int low[N], dfn[N], Time;
