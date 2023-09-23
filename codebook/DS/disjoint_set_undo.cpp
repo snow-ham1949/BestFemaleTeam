@@ -1,9 +1,4 @@
-/**
- * Name : Dijoint Set with undo
- * Description : DisjointSet (Makes a set of sets, merge sets, set membership, no. of sets, undo last operation,size of each component)
- * Time Complexity : parent O(lg(N)), setUp O(lg(N)), undo O(1),
- */
-
+//parent O(lg(N)), setUp O(lg(N)), undo O(1)
 #define MX 10000
 int rp[MX],sz[MX];
 int compo;
