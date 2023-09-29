@@ -9,7 +9,7 @@
 (2885681153, 3) 
 */
 typedef long long ll;
-const int maxn = 65536;
+const int maxn = 65536; // must be power of 2
 
 struct NTT {
 	ll mod = 2013265921, root = 31;
@@ -73,7 +73,8 @@ struct NTT {
 		ntt(a, sz), ntt(b, sz);
 		for (int i = 0; i < sz; ++i) c[i] = (a[i] * b[i]) % mod;
 		intt(c, sz);
-		while (c.size() && c.back() == 0) c.pop_back();
+		// len is a.sz + b.sz - 1, no need to pop
+		// while (c.size() && c.back() == 0) c.pop_back();
 		return c;
 	}
 };
