@@ -1,36 +1,36 @@
-using Graph = vector<vector<int>>;
- 
-// Struct for finding strongly connected components in a graph
-// Condensed graph is in reverse topological order
-// "comp" gives component in condensed graph that node i is in
-// Time Complexity: O(n + m)
 struct SCC {
-	Graph g;
-	vector<int> comp;
-	vector<int> ind;
-	vector<int> sta;
+  vector<int> g[N];
+	vector<int> comp, ind;
+  stack<int> sta;
 	int di = 0; // DFS counter
 	int cc = 0; // Comp count
- 
+
+  void add_edge(int s, int e) {
+    g[s].push_back(e);
+  }
 	int dfs(int i) {
 		if (ind[i] != -1) return (comp[i] == -1) ? ind[i] : di;
 		ind[i] = di;
 		int md = di;
 		++di;
- 
-		sta.push_back(i);
+	
+		sta.push(i);
 		for (auto t : g[i]) md = min(md, dfs(t));
- 
+	
 		if (md == ind[i]) {
 			while(comp[i] == -1) {
-				comp[sta.back()] = cc;
-				sta.pop_back();
+				comp[sta.top()] = cc;
+				sta.pop();
 			}
 			++cc;
 		}
 		return md;
 	}
-	SCC(const Graph& gr) : g(gr), comp(gr.size(), -1), ind(gr.size(), -1) {
-		for (int i = 0; i < g.size(); ++i) dfs(i);
-	}
+  void get() {
+    for (int i = 0; i < N; i++) dfs(i);
+  }
+  SCC() {
+    comp.assign(N, -1);
+    ind.assign(N, -1);
+  }
 };
