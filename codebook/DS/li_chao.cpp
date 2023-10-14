@@ -1,9 +1,3 @@
-#include <cassert>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
-using namespace std;
 using uint = unsigned int;
 using ll = long long;
 using ull = unsigned long long;
@@ -33,7 +27,6 @@ struct LiChaoTree {
     }
     ll query(ll x) {
         int k = int(lower_bound(xs.begin(), xs.end(), x) - xs.begin());
-        assert(0 <= k && k < int(xs.size()) && xs[k] == x);
         k += sz;
         ll ans = INF;
         while (k >= 1) {
