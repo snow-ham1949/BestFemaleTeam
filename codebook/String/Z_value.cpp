@@ -1,3 +1,4 @@
+// z[i] = s and s[i, n - 1] max Longest Common Prefix length
 int z[MAXN];
 void make_z(const string &s) {
   int l = 0, r = 0;
