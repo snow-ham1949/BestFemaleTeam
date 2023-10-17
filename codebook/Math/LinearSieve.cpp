@@ -1,13 +1,15 @@
-int LeastPrimeDivisor[kN];
-vector<int> pr;
+const int N = 1e8 + 5;
 
-void LinearSieve(){
-  for(int i = 2; i < kN; i++){
-    if(!LeastPrimeDivisor[i]) pr.push_back(i), LeastPrimeDivisor[i] = i;
-    for(int p:pr){
-      if(i*p >= kN) break;
-      LeastPrimeDivisor[i*p] = p;
-      if(i%p == 0)break;
+bitset<N> num;
+vector<int> prime;
+void LS(int n) {
+  for (int i = 2; i <= n; ++i) {
+    if (!num[i])
+        prime.push_back(i);
+    for (int j = 0; j < prime.size(); ++j) {
+      if (i * prime[j] >= n) break;
+      num[i * prime[j]] = 1;
+      if (i % prime[j] == 0)break;
     }
   }
 }
