@@ -12,7 +12,7 @@ struct LiChaoTree {
     V<L> data;
     V<ll> xs;
     static ll eval(L l, ll x) { return l.first * x + l.second; }
-    LiChaoTree(V<ll> _xs) : xs(_xs) {
+    LiChaoTree(V<ll> _xs) : xs(_xs) { // xs stores all x appears in this problem
         int n = int(xs.size());
         int lg = 1;
         while ((1 << lg) < n) lg++;
@@ -20,12 +20,12 @@ struct LiChaoTree {
         while (int(xs.size()) < sz) xs.push_back(TEN(9));
         data = V<L>(2 * sz, L(0, 3 * TEN(18)));
     }
-    void add(L line, int l, int r) {
+    void add(L line, int l, int r) { // add({a, b}, l, r): add a segment f(x) = a*x+b, x in [l, r]
         l = lower_bound(xs.begin(), xs.end(), l) - xs.begin();
         r = lower_bound(xs.begin(), xs.end(), r) - xs.begin();
         add(line, l, r, 0, sz, 1);
     }
-    ll query(ll x) {
+    ll query(ll x) { // query(a) : find the minimal y when x=a
         int k = int(lower_bound(xs.begin(), xs.end(), x) - xs.begin());
         k += sz;
         ll ans = INF;
@@ -59,56 +59,3 @@ struct LiChaoTree {
         }
     }
 };
-
-int main() {
-
-    int n, q;
-    scanf("%d %d", &n, &q);
-    V<ll> sl(n), sr(n), sa(n), sb(n);
-    V<ll> xs;
-    for (int i = 0; i < n; i++) {
-        scanf("%lld %lld %lld %lld", &sl[i], &sr[i], &sa[i], &sb[i]);
-        xs.push_back(sl[i]);
-        xs.push_back(sr[i]);
-    }
-    struct Q {
-        int ty;
-        ll l, r, a, b;
-        ll p;
-    };
-    V<Q> query;
-    for (int i = 0; i < q; i++) {
-        int t;
-        scanf("%d", &t);
-        if (t == 0) {
-            // add
-            ll l, r, a, b;
-            scanf("%lld %lld %lld %lld", &l, &r, &a, &b);
-            xs.push_back(l);
-            xs.push_back(r);
-            query.push_back(Q{t, l, r, a, b, -1});
-        } else {
-            ll p;
-            scanf("%lld", &p);
-            xs.push_back(p);
-            query.push_back(Q{t, -1, -1, -1, -1, p});
-        }
-    }
-    sort(xs.begin(), xs.end());
-    xs.erase(unique(xs.begin(), xs.end()), xs.end());
-    auto tr = LiChaoTree(xs);
-    for (int i = 0; i < n; i++) {
-        tr.add({sa[i], sb[i]}, sl[i], sr[i]);
-    }
-
-    for (auto qu : query) {
-        if (qu.ty == 0) {
-            // add
-            tr.add({qu.a, qu.b}, qu.l, qu.r);
-        } else {
-            ll ans = tr.query(qu.p);
-            printf("%s\n", (ans == INF ? "INFINITY" : to_string(ans).c_str()));
-        }
-    }
-    return 0;
-}
