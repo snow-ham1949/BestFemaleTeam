@@ -1,48 +1,66 @@
 int rnd() { return ((rand() % (1 << 15)) << 16) + (rand() % (1 << 15)); }
 
-struct Node {
-  int val;
-  int weight, size;
-  Node *left, *right;
-  Node(int c) : val(c), weight(rnd()), size(1), left(NULL), right(NULL) {}
-} *root;
-
-int size(Node *treap) { 
-  return treap ? treap->size : 0; 
+struct Treap{
+  Treap *lc, *rc;
+  int sz, pri, val;
+  long long int sum;
+  bool rev;
+  Treap(int _val): lc(nullptr), rc(nullptr), sz(1), pri(rnd()), val(_val), sum(_val), rev(false){};
+};
+long long int SUM(Treap* a){
+  return a? a->sum : 0;
 }
-
-void split(Node *treap, Node *&left, Node *&right, int val) {
-  if (!treap) {
-    left = right = NULL;
-    return;
-  }
-
-  if (size(treap->left) < val) {
-    split(treap->right, treap->right, right, val - size(treap->left) - 1);
-    left = treap;
-  } else {
-    split(treap->left, left, treap->left, val);
-    right = treap;
-  }
-  treap->size = 1 + size(treap->left) + size(treap->right);
+int SZ(Treap *a){
+  return a? a->sz:0;
 }
-
-void merge(Node *&treap, Node *left, Node *right) {
-  if (left == NULL) {
-    treap = right;
+void pull(Treap* a){
+  if(!a){
     return;
   }
-  if (right == NULL) {
-    treap = left;
+  a->sz = 1 + SZ(a->lc) + SZ(a->rc);
+  a->sum = a->val + SUM(a->lc) + SUM(a->rc);
+}
+void push(Treap* a){
+  if(a->rev){
+    swap(a->lc, a->rc);
+  }
+  if(a && a->lc){
+    a->lc->rev ^= a->rev;
+  }
+  if(a && a->rc){
+    a->rc->rev ^= a->rev;
+  }
+  a->rev = 0;
+}
+Treap* merge(Treap* a, Treap* b){
+  if(!a || !b)return a? a:b;
+  push(a);
+  push(b);
+  if(a->pri > b->pri){
+    a->rc = merge(a->rc, b);
+    pull(a);
+    return a;
+  }
+  else{
+    b->lc = merge(a, b->lc);
+    pull(b);
+    return b;
+  }
+}
+void split(Treap* t, int k, Treap* &a, Treap* &b){
+  if(!t){
+    a = b = nullptr;
     return;
   }
-
-  if (left->weight < right->weight) {
-    merge(left->right, left->right, right);
-    treap = left;
-  } else {
-    merge(right->left, left, right->left);
-    treap = right;
+  push(t);
+  if(SZ(t->lc)+1 <= k){
+    a = t;
+    split(t->rc, k-(SZ(t->lc)+1), a->rc, b);
+    pull(a);
+    return;
   }
-  treap->size = 1 + size(treap->left) + size(treap->right);
+  b = t;
+  split(t->lc, k, a, b->lc);
+  pull(b);
+  return;
 }
