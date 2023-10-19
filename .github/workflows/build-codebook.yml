@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get codebook source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         with:
           path: source
       - name: Get codebook pdf branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         with:
           ref: codebook 
           path: pdf
