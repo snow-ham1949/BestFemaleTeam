@@ -1,7 +1,7 @@
 // edge[i] = {z, x, y}
 // edge(x, y) with weight z
 vector<vector<int>> edgelist;
-
+// O(ElogV)
 int Kruskal_MST(int N){
   int set_count = N, weight = 0;
   // make set for all vertex
