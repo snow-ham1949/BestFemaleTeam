@@ -1,6 +1,6 @@
 vector<pii> edges[MAXN];
 // edges[i]: edge(i, edges[i].second) with weight edges[i].first
-// O(ElogE)
+// O(ElogV)
 int Prim_MST(int N){
   bool choose[N] = {0};
   int count = 0, weight = 0;
