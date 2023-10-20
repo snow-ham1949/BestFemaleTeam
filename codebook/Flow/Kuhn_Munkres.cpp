@@ -52,6 +52,6 @@ struct KM { // 0-base
   }
 };
 // complexity: n^3
-// usage
+// maximum weight bipartite perfect matching
 // init -> add_edge -> Solve
 // match: (i, fl[i])
