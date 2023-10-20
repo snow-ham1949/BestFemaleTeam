@@ -1,7 +1,7 @@
 const int N = 200 + 5; // number of vertices
 const ll INF = (1ll << 60) - 1;
 #define pb push_back
-
+// O(sqrt(V)E) for bipartite
 struct Dinic { // 0-base
   struct edge {
     int to, rev;
