@@ -109,6 +109,6 @@ struct Bipartite_Matching { // 0-base
 // O(VE)
 // init -> add_edge -> matching
 // vertex coverset number = matching number
-// vertex coverset -> after matching -> vertex_cover
+// vertex coverset -> after matching -> vertex_cover (type == 1, and type == -1 on left side)
 // independent set number = minimum path cover number = V - matching number
 // independent set -> after vertex_cover (return M) -> independent set is V\M
