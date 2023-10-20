@@ -5,7 +5,7 @@ int del[MAXN] = {0};
 // in, out degree are calculated when add edges
 int in[MAXN] = {0}, out[MAXN] = {0}; 
 stack <int> st;
-// G[i] is sorted
+// G[i] is sorted, represent directed graph
 vector <int> G[MAXN];
 
 void dfs(int now)
